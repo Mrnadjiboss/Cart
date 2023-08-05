@@ -36,7 +36,7 @@
             padding: 10px;
             display: block;
             text-align: center;
-            border-radius: 20px;
+            border-radius: 0px;
             margin-bottom: 10px;
             transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out, filter 0.3s ease-in-out;
         }
@@ -47,6 +47,7 @@
             transform: scale3d(1.1, 1.1, 1);
             filter: brightness(1.2); /* Hover brightness effect */
             box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.3); /* Hover box shadow */
+            font-weight: bold;
         }
 
         /* Keyframe animation for the retract button */
@@ -163,7 +164,7 @@
 <div class="container">
     <div class="row">
         @foreach ($products as $product)
-            <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+            <div class="col-12 col-sm-6 col-md-4 col-lg-3 mx-3 p-2">
                 <div class="card" style="width: 18rem;">
                     <img class="card-img-top" src="{{$product -> img }}" alt="Card image cap">
                     <div class="card-body">

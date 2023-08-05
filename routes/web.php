@@ -2,7 +2,9 @@
 use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
 use App\Models\Product;
+use App\Models\CartItem;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\CartItemController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -16,7 +18,8 @@ use App\Http\Controllers\CartController;
 
 Route::get('/', function () {
     $products = Product::all();
-    return view('welcome', compact('products'));
+    $cartItems = CartItem::all();
+    return view('welcome', compact('products', 'cartItems'));
 });
 Route::get('/products', [ProductController::class, 'index'])-> name("products.index");
 Route::get('/products/create', [ProductController::class, 'create'])->name('products.create');
@@ -27,3 +30,14 @@ Route::put('/products/{id}', [ProductController::class, 'update'])->name('produc
 Route::delete('/products/{id}', [ProductController::class, 'destroy'])->name('products.destroy');
 
 
+Route::get('/cart', function () {
+    // Display the cart and handle cart actions
+});
+
+// Route to add an item to the cart
+Route::post('/cart/add/{product}', [CartItemController::class, 'addToCart'])->name('cart.add');
+
+// Route to remove an item from the cart
+Route::post('/cart/remove/{product}', [CartItemController::class, 'removeFromCart'])->name('cart.remove');
+
+Route::get('/cart', [CartController::class, 'showCart'])->name('cart.show');

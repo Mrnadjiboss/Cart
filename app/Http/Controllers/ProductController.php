@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Product;
+use App\Models\CartItem;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller

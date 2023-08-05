@@ -24,18 +24,21 @@
 
         .nav-link {
             color: #fff;
-            border: 2px solid transparent;
-            border-radius: 15px;
-            padding: 8px 16px;
-            transition: color 0.3s ease-in-out, background-color 0.3s ease-in-out, transform 0.3s ease-in-out;
+            text-decoration: none;
+            padding: 10px;
+            display: block;
+            text-align: center;
+            border-radius: 20px;
+            margin-bottom: 10px;
+            transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out, filter 0.3s ease-in-out;
         }
 
         .nav-link:hover {
-            color: #fff;
-            border: 2px solid transparent;
-            border-radius: 15px;
-            padding: 8px 16px;
-            transition: color 0.3s ease-in-out, background-color 0.3s ease-in-out, transform 0.3s ease-in-out;
+            background-color: #fff; /* Hover background color */
+            color: #333; /* Hover text color */
+            transform: scale3d(1.1, 1.1, 1);
+            filter: brightness(1.2); /* Hover brightness effect */
+            box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.3); /* Hover box shadow */
         }
 
         /* Keyframe animation for the navbar-brand */
@@ -114,7 +117,65 @@
         .cart-container.active {
             right: 0;
         }
+        .btn-hover {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: transparent;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 1px;
+            font-size: 18px;
+            transition: transform 0.3s ease-in-out;
+            font-style: italic;
+            border:  0px white;
 
+        }
+
+        /* Hover effect with transform: scale3d */
+        .btn-hover:hover {
+            transform: scale3d(1.1, 1.1, 1);
+        }
+
+        /* 3D Keyframe Animation */
+        @keyframes rotateAndScale {
+            0% {
+                transform: scale3d(1, 1, 1);
+            }
+            50% {
+                transform: scale3d(1.2, 1.2, 1.2) rotateZ(45deg);
+            }
+            100% {
+                transform: scale3d(1, 1, 1);
+            }
+        }
+
+        /* Hover effect with 3D Keyframe Animation */
+        .btn-hover:hover::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 123, 255, 0.2);
+            border-radius: 5px;
+            /* animation: rotateAndScale 0.6s ease-in-out; */
+            z-index: -1;
+        }
+
+        /* Hover effect with 3D Keyframe Animation */
+        .hover-link:hover::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 123, 255, 0.2);
+            border-radius: 5px;
+            animation: rotateAndScale 0.6s ease-in-out;
+            z-index: -1;
+        }
         /* ... (existing CSS styles for the cart) ... */
 
         @media (max-width: 767.98px) {
@@ -178,7 +239,7 @@
 </head>
 <body>
 
-<nav class="navbar navbar-expand-lg">
+<nav class="navbar navbar-expand-lg fixed-top">
     <div class="container">
         <a class="navbar-brand text-light" href="#">Payment System</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
@@ -194,7 +255,7 @@
                     <a class="nav-link" href="/products">Backoffice</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" onclick="toggleCart()" href="">Cart</a>
+                    <a class="nav-link" onclick="" href="/cart">Cart</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="">Login</a>
@@ -202,22 +263,32 @@
                 <li class="nav-item">
                     <a class="nav-link" href="#">Register</a>
                 </li>
+                <li class="nav-item">
+                <a class="nav-link" onclick="toggleCart()">Open Cart</a>
+                </li>
             </ul>
         </div>
     </div>
 </nav>
-
+<br>
+<hr>
 <div class="container">
     <div class="row">
         @foreach ($products as $product)
             <div class="col-3 mx-2">
-                <div class="card" style="width: 18rem;">
+                <div class="card text-center" style="width: 18rem;">
     <img class="card-img-top" src="{{$product -> img }}" alt="Card image cap">
     <div class="card-body">
         <h5 class="card-title">{{$product -> name }}</h5>
+        <hr>
         <h5 class="card-title">{{$product -> price }} $</h5>
+        <hr class="bg-light">
     </div>
-                    <a href="#" class="btn btn-primary btn-sm" onclick="addToCart('{{$product->name}}', '{{$product->price}}')">Add To Cart</a>
+
+<form action="{{ route('cart.add', ['product' => $product->id]) }}" method="POST">
+    @csrf
+    <button type="submit" class="btn-hover btn btn-secondary " ><strong>Add To Cart</strong></button>
+</form>
                 </div>
             </div>
         @endforeach
@@ -227,43 +298,51 @@
 <div class="cart-container" id="cart">
     <span class="close-cart" onclick="toggleCart()">&times;</span>
     <h3>Your Cart</h3>
-    @foreach($products as $product)
+
     <div id="cart-items">
+    @foreach($cartItems as $cartItem)
+            <div class="cart-item ">
+                <img class="card-img-top" src="{{$cartItem->product->img }}" alt="Product Image">
+                <div class="card-body">
+                    <h5 class="card-title">{{$cartItem->product->name }}</h5>
+                    <hr>
+                    <h5 class="card-title">{{$cartItem->product->price }} $</h5>
+                    <hr class="bg-light">
+                </div>
+                <p>{{ $cartItem->product->name }} - ${{ $cartItem->product->price }} x {{ $cartItem->quantity }}</p>
+
+                <form action="{{ route('cart.remove', ['product' => $cartItem->product->id]) }}" method="post">
+                @csrf
+                <button type="submit" class="btn btn-danger btn-sm">Remove</button>
+            </form>
+            </div>
+        @endforeach
     </div>
-    @endforeach
+
     <p class="cart-total">Total: $<span id="cart-total">0</span></p>
 </div>
+
+
+    <div class="cart-container" id="cart">
+        <h1>Your Cart</h1>
+        <!-- Sample cart items (replace with your dynamic data) -->
+
+        <p>yes</p>
+        </div>
+
 
 
 <!-- Include Bootstrap JS and jQuery -->
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 
-<script>
-    function toggleCart() {
-        var cart = document.getElementById('cart');
-        cart.classList.toggle('active');
-    }
 
-    function addToCart(name, price) {
-        var cartItems = document.getElementById('cart-items');
-        var cartTotal = document.getElementById('cart-total');
-
-        // Create a new cart item element
-        var cartItem = document.createElement('div');
-        cartItem.className = 'cart-item';
-        cartItem.innerHTML = '<span>' + name + '</span> - $' + price;
-
-        // Add the cart item to the cart
-        cartItems.appendChild(cartItem);
-
-        // Calculate the new total
-        var currentTotal = parseFloat(cartTotal.textContent);
-        var itemPrice = parseFloat(price);
-        var newTotal = currentTotal + itemPrice;
-        cartTotal.textContent = newTotal.toFixed(2);
-    }
 </script>
-
+<script>
+        function toggleCart() {
+            var cart = document.getElementById('cart');
+            cart.classList.toggle('active');
+        }
+    </script>
 </body>
 </html>
