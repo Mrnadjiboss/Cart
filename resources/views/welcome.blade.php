@@ -1,14 +1,20 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Navbar and Card Styling Example</title>
+    <title>Payment System</title>
     <!-- Include Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Edu+SA+Beginner&display=swap" rel="stylesheet">
     <!-- Add custom CSS styles -->
     <style>
         /* ... (existing CSS styles for the navbar and cards) ... */
         body {
             background-color: #1a1a1a;
+            font-family: 'Edu SA Beginner', cursive;
+            /* background-image: url("https://media.giphy.com/media/F5LQhVcDygI2t6k0DP/giphy.gif"); */
+            background-attachment: fixed;
         }
 
         .navbar {
