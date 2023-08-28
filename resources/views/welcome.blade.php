@@ -247,7 +247,7 @@
 
 <nav class="navbar navbar-expand-lg fixed-top">
     <div class="container">
-        <a class="navbar-brand text-light" href="#">Payment System</a>
+        <a class="navbar-brand text-light" href="#">Produits</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -277,7 +277,14 @@
     </div>
 </nav>
 <br>
-<hr>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
 <div class="container">
     <div class="row">
         @foreach ($products as $product)

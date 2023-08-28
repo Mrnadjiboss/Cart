@@ -27,7 +27,6 @@ class CartItemController extends Controller
     {
         // Find the cart item for the product
         $cartItem = CartItem::where('product_id', $product->id)->first();
-
         if ($cartItem) {
             if ($cartItem->quantity > 1) {
                 $cartItem->quantity -= 1;

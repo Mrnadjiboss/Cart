@@ -43,9 +43,7 @@ class ProductController extends Controller
         'img' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
         'name' => 'required|string',
         'price' => 'required|numeric',
-
     ]);
-
 
         $imagePath = $request->file('img')->store('products', 'public');
         $imageUrl = Storage::url($imagePath);
@@ -53,7 +51,6 @@ class ProductController extends Controller
             'img' => $imageUrl,
             'name' => $request->input('name'),
             'price' => $request->input('price'),
-
         ]);
 
 
